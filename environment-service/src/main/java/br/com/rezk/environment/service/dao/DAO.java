@@ -5,6 +5,7 @@ import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -13,6 +14,8 @@ public abstract class DAO<T, PK extends Serializable> {
 	protected Class<T> clazz;
 	
 	@Autowired
+	private SessionFactory factory;
+	
 	private Session session;
 	
 	@SuppressWarnings("unchecked")
@@ -67,6 +70,7 @@ public abstract class DAO<T, PK extends Serializable> {
 	
 	private void beginTransaction() {
 		// Create a session
+		this.session = this.factory.getCurrentSession();
 		this.session.beginTransaction();
 	}
 	

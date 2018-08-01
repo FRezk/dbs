@@ -89,12 +89,11 @@ public class BeansConfig {
 	}
 
 	@Bean()
-	@ApplicationScope
-	public Session session() {
+	public SessionFactory session() {
 		// Create session factory
 		SessionFactory factory = new org.hibernate.cfg.Configuration().configure("hibernate.cfg.xml")
 				.addAnnotatedClass(Customer.class).addAnnotatedClass(Restaurant.class).addAnnotatedClass(Rating.class).buildSessionFactory();
-		return factory.getCurrentSession();
+		return factory;
 	}
 	
 	@Bean(name="customerToRequest")
