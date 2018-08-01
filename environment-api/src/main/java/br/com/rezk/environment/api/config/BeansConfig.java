@@ -11,14 +11,22 @@ import org.springframework.web.context.annotation.ApplicationScope;
 import com.google.gson.Gson;
 
 import br.com.rezk.environment.service.dao.CustomerDAO;
+import br.com.rezk.environment.service.dao.RatingDAO;
+import br.com.rezk.environment.service.dao.RestaurantDAO;
 import br.com.rezk.environment.service.entity.Customer;
+import br.com.rezk.environment.service.entity.Rating;
+import br.com.rezk.environment.service.entity.Restaurant;
 import br.com.rezk.environment.service.mapper.CustomerMapper;
 import br.com.rezk.environment.service.mapper.ObjMapper;
 import br.com.rezk.environment.service.request.CustomerRequest;
 import br.com.rezk.environment.service.v1.CustomerService;
 import br.com.rezk.environment.service.v1.HomeService;
+import br.com.rezk.environment.service.v1.RatingService;
+import br.com.rezk.environment.service.v1.RestaurantService;
 import br.com.rezk.environment.service.v1.provider.CustomerServiceProvider;
 import br.com.rezk.environment.service.v1.provider.HomeServiceProvider;
+import br.com.rezk.environment.service.v1.provider.RatingServiceProvider;
+import br.com.rezk.environment.service.v1.provider.RestaurantServiceProvider;
 
 @Configuration
 public class BeansConfig {
@@ -59,13 +67,33 @@ public class BeansConfig {
 	public CustomerMapper customerMapper() {
 		return new CustomerMapper();
 	}
-
+	
 	@Bean
+	public RestaurantService restaurantService() {
+		return new RestaurantServiceProvider();
+	}
+	
+	@Bean
+	public RestaurantDAO restaurantDAO() {
+		return new RestaurantDAO();
+	}
+	
+	@Bean
+	public RatingService ratingService() {
+		return new RatingServiceProvider();
+	}
+	
+	@Bean
+	public RatingDAO ratingDAO() {
+		return new RatingDAO();
+	}
+
+	@Bean()
 	@ApplicationScope
 	public Session session() {
 		// Create session factory
 		SessionFactory factory = new org.hibernate.cfg.Configuration().configure("hibernate.cfg.xml")
-				.addAnnotatedClass(Customer.class).buildSessionFactory();
+				.addAnnotatedClass(Customer.class).addAnnotatedClass(Restaurant.class).addAnnotatedClass(Rating.class).buildSessionFactory();
 		return factory.getCurrentSession();
 	}
 	
